@@ -18,7 +18,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.10' # Versão altamente estável com Flet
+          python-version: '3.11'
 
       - name: Set up Java JDK
         uses: actions/setup-java@v4
@@ -29,18 +29,20 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.22.x' # Trava em uma versão estável do Flutter do mercado
+          channel: 'stable'
 
       - name: Install Python Dependencies
         run: |
           python -m pip install --upgrade pip
           pip install flet pillow
 
-      - name: Pre-configure Flet Environment
-        run: |
-          # Garante que o diretório build exista de forma limpa antes do empacotamento
-          mkdir -p build/apk
-
       - name: Build APK
         run: |
-          flet build apk --verbose
+          # Comando corrigido sem flags inválidas
+          flet build apk
+
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: flet-android-apk
+          path: build/apk/*.apk
