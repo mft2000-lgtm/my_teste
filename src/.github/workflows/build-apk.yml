@@ -31,17 +31,17 @@ jobs:
         with:
           channel: 'stable'
 
-      - name: Install Python Dependencies
+      - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
-          # Força a instalação do flet mais recente com a CLI acoplada
-          pip install flet pillow
+          # Instala explicitamente a CLI e as ferramentas de imagem locais
+          pip install flet flet-cli pillow
 
-      - name: Build APK
-        # O truque abaixo chama o módulo interno direto do python sem acionar a flag travada do CI
+      - name: Build APK (Bypass Global Tool)
         run: |
-          python -m flet build apk
-
+          # Executa o pacote local do site-packages diretamente para ignorar o wrapper global invisível do Actions
+          python -m flet_cli.main build apk
+          
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
