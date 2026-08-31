@@ -34,15 +34,14 @@ jobs:
       - name: Install Python Dependencies
         run: |
           python -m pip install --upgrade pip
+          # Força a instalação do flet mais recente com a CLI acoplada
           pip install flet pillow
 
       - name: Build APK
-        # Solução: Desativa o modo CI oculto para o Flet não injetar a flag inválida automaticamente
-        env:
-          CI: false
+        # O truque abaixo chama o módulo interno direto do python sem acionar a flag travada do CI
         run: |
           python -m flet build apk
-          
+
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
