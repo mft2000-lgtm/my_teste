@@ -12,35 +12,35 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Passo 1: Baixa o código do seu repositório para o servidor
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      # Passo 2: Configura o ambiente Python correto
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      # Passo 3: Configura o Java (Obrigatório para compilar qualquer arquivo Android .apk)
       - name: Set up Java JDK
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '17'
 
-      # Passo 4: Instala o Flet e dependências diretamente via pip
-      - name: Install Dependencies
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+
+      - name: Install Python Dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install flet pillow
+          pip install flet flet-cli pillow
 
-      # Passo 5: Executa a compilação (O Flet cuidará do Flutter internamente sem conflito de flags)
-      - name: Build APK
+      - name: Build APK (Bypass Interceptor)
         run: |
-          flet build apk
+          # Executa a lógica interna do compilador direto pelo Python bypassando o atalho "flet"
+          python -c "from flet_cli.commands.build import build_command; import sys; sys.argv = ['flet', 'build', 'apk']; build_command()"
 
-      # Passo 6: Salva o arquivo gerado para download
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
