@@ -1,0 +1,50 @@
+1. Criar o ambiente virtual
+Execute o comando padrão do Python para criar a pasta do ambiente (geralmente chamada de .venv ou venv):
+
+> python -m venv .venv
+
+
+2. Ativar o ambiente virtual
+A ativação depende do sistema operacional que você está usando:Windows 
+(PowerShell)
+
+> .venv\Scripts\Activate.ps1
+
+
+3. Instalar o Flet
+Com o ambiente ativado, atualize o gerenciador de pacotes e instale a biblioteca do Flet:
+
+> pip install --upgrade pip
+
+
+1. Garanta que a venv está ativa no terminal
+No seu terminal do VS Code, certifique-se de que o nome (.venv) aparece antes do caminho da pasta. 
+Se não aparecer, ative-o:
+Windows (PowerShell):
+
+> .venv\Scripts\Activate.ps1
+
+> pip install flet
+
+
+2. Configure o interpretador correto no VS CodeS
+Se o terminal já está ativo e mesmo assim o erro persiste, o VS Code está perdido. Ajuste assim:
+a) Use o atalho Ctrl + Shift + P (ou Cmd + Shift + P no Mac) para abrir a Paleta de Comandos.
+b) Digite e selecione: Python: Select Interpreter.
+c) Escolha a opção que aponta para a sua pasta .venv 
+   (geralmente tem uma etiqueta escrito 'Recommended' ou '.venv': venv).
+
+
+3. Como rodar o app do jeito certoDepois de ativar a venv e selecionar o interpretador, 
+   não execute o arquivo clicando no botão de "Play" do VS Code. 
+   Use a linha de comando do Flet, que previne esse tipo de erro:
+
+> flet run src/main.py
+
+
+
+
+https://github.com/mft2000-lgtm/my_teste
+
+git remote add origin https://github.com/mft2000-lgtm/my_teste
+

@@ -1,0 +1,54 @@
+name: Build Flet Android APK
+
+on:
+  push:
+    branches:
+      - main  # Dispara o build toda vez que você enviar código para a branch principal
+  workflow_dispatch: # Permite que você clique em um botão para gerar o APK manualmente
+
+jobs:
+  build:
+    name: Build APK Android
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Baixa o código do seu repositório Git para a máquina virtual
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      # Step 2: Instala e configura a versão adequada do Python no servidor
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      # Step 3: Instala o Java JDK obrigatório para compilar arquivos Android (.apk)
+      - name: Set up Java JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      # Step 4: Instala o ecossistema do Flutter necessário para o Flet rodar no celular
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+
+      # Step 5: Instala as bibliotecas de dependências do Python e o Flet CLI
+      - name: Install Python Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install flet pillow  # O pillow ajuda o Flet a processar seus assets como o add.png
+
+      # Step 6: Executa a compilação do APK do Flet de forma automatizada
+      - name: Build APK
+        run: |
+          flet build apk --no-interactive
+
+      # Step 7: Salva o arquivo APK gerado nos servidores do GitHub para download
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: flet-android-apk
+          path: build/apk/*.apk
